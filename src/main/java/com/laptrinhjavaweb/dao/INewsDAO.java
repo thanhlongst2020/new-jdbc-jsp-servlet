@@ -10,6 +10,7 @@ public interface INewsDAO extends GenericDAO<NewsModel> {
 	Long save(NewsModel newModel);
 	void update(NewsModel updateNew);
 	void delete(long id);
-	List<NewsModel> findAll();
+	List<NewsModel> findAll(Integer offset, Integer limit);
+	int getTotaItem();
 	
 }

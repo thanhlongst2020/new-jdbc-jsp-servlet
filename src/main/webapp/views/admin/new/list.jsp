@@ -41,6 +41,7 @@
 											</tbody>
 										  </table>
 										<ul class="pagination" id="pagination"></ul>
+										<input type="hidden" value="" id="page">
 									</div>
 								</div>
 							</div>

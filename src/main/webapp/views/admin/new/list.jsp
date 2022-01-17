@@ -41,7 +41,7 @@
 											</tbody>
 										  </table>
 										<ul class="pagination" id="pagination"></ul>
-										<!-- save page number -->
+										<!-- save page number 99 -->
 										<input type="hidden" value="" id="page">
 									</div>
 								</div>

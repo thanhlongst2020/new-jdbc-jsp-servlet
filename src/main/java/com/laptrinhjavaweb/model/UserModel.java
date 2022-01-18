@@ -9,6 +9,7 @@ public class UserModel extends AbstractModel<UserModel> {
 	private String password;
 	private int status;
 	private Long roleid;
+	private RoleModel role = new RoleModel();
 	
 	
 	
@@ -43,8 +44,10 @@ public class UserModel extends AbstractModel<UserModel> {
 	public void setRoleid(Long roleid) {
 		this.roleid = roleid;
 	}
-	
-	
-	
-	
+	public RoleModel getRole() {
+		return role;
+	}
+	public void setRole(RoleModel role) {
+		this.role = role;
+	}
 }

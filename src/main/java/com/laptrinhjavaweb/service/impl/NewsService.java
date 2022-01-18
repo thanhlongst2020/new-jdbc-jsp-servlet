@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import com.laptrinhjavaweb.dao.INewsDAO;
 import com.laptrinhjavaweb.model.NewsModel;
+import com.laptrinhjavaweb.paging.Pageble;
 import com.laptrinhjavaweb.service.INewsService;
 import com.opensymphony.sitemesh.compatability.OldDecorator2NewDecorator;
 
@@ -51,8 +52,8 @@ public class NewsService implements INewsService {
 	}
 
 	@Override
-	public List<NewsModel> findAll(Integer offset, Integer limit) {
-		return newDao.findAll(offset,limit);
+	public List<NewsModel> findAll(Pageble pageble) {
+		return newDao.findAll(pageble);
 	}
 
 	@Override

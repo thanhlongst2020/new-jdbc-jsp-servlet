@@ -6,6 +6,7 @@ import com.laptrinhjavaweb.dao.INewsDAO;
 import com.laptrinhjavaweb.mapper.NewMapper;
 import com.laptrinhjavaweb.model.NewsModel;
 //import com.mysql.cj.xdevapi.Statement;
+import com.laptrinhjavaweb.paging.Pageble;
 
 public class NewsDAO extends AbstractDAO<NewsModel> implements INewsDAO {
 	
@@ -54,9 +55,16 @@ public class NewsDAO extends AbstractDAO<NewsModel> implements INewsDAO {
 	}
 
 	@Override
-	public List<NewsModel> findAll(Integer offset, Integer limit) {
-		String sql ="select * from news limit ?,?";
-		return query(sql,new NewMapper(),offset,limit );
+	public List<NewsModel> findAll(Pageble pageble) {
+		StringBuilder sql = new StringBuilder("select * from news");
+		if(pageble.getSorter() != null) {
+			sql.append(" ORDER BY "+pageble.getSorter().getSortName()+" " +pageble.getSorter().getSortBy()+"");
+		}
+		if(pageble.getOffset() != null && pageble.getLimit() != null ) {
+			sql.append(" limit "+pageble.getOffset()+","+pageble.getLimit()+"");
+		} 
+		return query(sql.toString(),new NewMapper());
+		
 	}
 
 	@Override

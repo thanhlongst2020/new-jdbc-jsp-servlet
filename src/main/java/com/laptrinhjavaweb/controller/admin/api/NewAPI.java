@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laptrinhjavaweb.model.NewsModel;
+import com.laptrinhjavaweb.model.UserModel;
 import com.laptrinhjavaweb.service.INewsService;
 import com.laptrinhjavaweb.utils.HttpUtil;
+import com.laptrinhjavaweb.utils.SessionUtil;
 
 @WebServlet(urlPatterns = { "/api-admin-new" })
 public class NewAPI extends HttpServlet {
@@ -27,9 +29,10 @@ public class NewAPI extends HttpServlet {
 		ObjectMapper mapper = new ObjectMapper();
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("application/json");
+
 		NewsModel newModel = HttpUtil.of(req.getReader()).toModel(NewsModel.class);
+		newModel.setCreatedBy( ((UserModel)(SessionUtil.getInstance().getValue(req, "USERMODEL"))).getUserName() );
 		newModel = newService.save(newModel);
-//		System.out.println(newModel);
 		mapper.writeValue(resp.getOutputStream(), newModel);
 	}
 	
@@ -45,6 +48,7 @@ public class NewAPI extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("application/json");
 		NewsModel updateNew = HttpUtil.of(req.getReader()).toModel(NewsModel.class);
+		updateNew.setModifiedBy( ((UserModel)(SessionUtil.getInstance().getValue(req, "USERMODEL"))).getUserName() );
 		updateNew = newService.update(updateNew);
 		mapper.writeValue(resp.getOutputStream(), updateNew);
 		

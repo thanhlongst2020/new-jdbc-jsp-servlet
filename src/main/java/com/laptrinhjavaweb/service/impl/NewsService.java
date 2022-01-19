@@ -5,7 +5,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.laptrinhjavaweb.dao.ICategoryDAO;
 import com.laptrinhjavaweb.dao.INewsDAO;
+import com.laptrinhjavaweb.model.CategoryModel;
 import com.laptrinhjavaweb.model.NewsModel;
 import com.laptrinhjavaweb.paging.Pageble;
 import com.laptrinhjavaweb.service.INewsService;
@@ -15,6 +17,9 @@ public class NewsService implements INewsService {
 	
 	@Inject
 	private INewsDAO newDao;
+
+	@Inject
+	private ICategoryDAO categoryDAO;
 	
 	@Override
 	public List<NewsModel> findByCategoryId(Long categoryid) {
@@ -60,5 +65,13 @@ public class NewsService implements INewsService {
 	public int getTotalItem() {
 		return newDao.getTotaItem();
 	}
-	
+
+    @Override
+    public NewsModel findOne(long id) {
+		NewsModel newsModel = newDao.findOne(id);
+		CategoryModel categoryModel = categoryDAO.findOne(newsModel.getCategoryid());
+		newsModel.setCategoryCode(categoryModel.getCode());
+		return newsModel;
+    }
+
 }

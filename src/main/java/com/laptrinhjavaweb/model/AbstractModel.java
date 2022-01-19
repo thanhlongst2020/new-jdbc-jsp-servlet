@@ -18,6 +18,9 @@ public class AbstractModel<T> {
 	private Integer totalItem;
 	private String sortName;
 	private String sortBy;
+	private String alert;
+	private String message;
+	private String type;
 	
 	public Long getId() {
 		return id;
@@ -97,11 +100,28 @@ public class AbstractModel<T> {
 	public void setSortName(String sortName) {
 		this.sortName = sortName;
 	}
-	
-	
 
-	
-	
-	
-	
+	public String getAlert() {
+		return alert;
+	}
+
+	public void setAlert(String alert) {
+		this.alert = alert;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

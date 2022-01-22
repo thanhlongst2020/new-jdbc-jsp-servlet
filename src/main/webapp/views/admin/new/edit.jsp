@@ -25,10 +25,10 @@
             <div class="row">
                 <div class="col-xs-12">
                     <c:if test="${not empty messageResponse}">
-                        <div class="alert alert-${alert}">
-                                ${messageResponse}
-                        </div>
-                    </c:if>
+						<div class="alert alert-${alert}">
+									${messageResponse}
+						</div>
+					</c:if>
                     <form id="formSubmit">
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">Thể loại</label>
@@ -72,7 +72,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">Mô tả ngắn</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="shortdescription" name="shortDescription" value="${model.shortdescription}"/>
+                                <input type="text" class="form-control" id="shortDescription" name="shortDescription" value="${model.shortDescription}"/>
                             </div>
                         </div>
                         <br/>
@@ -105,8 +105,40 @@
 <script>
     var editor = '';
     $(document).ready(function(){
-        editor = CKEDITOR.replace( 'content');
+        editor = CKEDITOR.replace('content');
     });
+
+    function addNew(data) {
+        $.ajax({
+           url: '${APIurl}',
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result){
+            	window.location.href = "${NewURL}?type=edit&id="+result.id+"&message=insert_success";
+            },
+            error: function (error){
+            	window.location.href = "${NewURL}?type=list&page=1&maxPageItem=2&message=error_system";
+            }
+        });
+    }
+
+    function updateNew(data) {
+        $.ajax({
+            url: '${APIurl}',
+            type: "PUT",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result){
+            	window.location.href = "${NewURL}?type=edit&id="+result.id+"&message=update_success";
+            },
+            error: function (error){
+            	window.location.href = "${NewURL}?type=list&page=1&maxPageItem=2&message=error_system";
+            }
+        });
+    }
 
     $('#btnAddOrUpdateNew').click(function (e) {
         e.preventDefault();
@@ -117,42 +149,65 @@
         });
         data["content"] = editor.getData();
         var id = $('#id').val();
-        if (id == "") {
+        if( id == ""){
             addNew(data);
         } else {
             updateNew(data);
         }
-    });
-    function addNew(data) {
-        $.ajax({
-            url: '${APIurl}',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            success: function (result) {
-                window.location.href = "${NewURL}?type=edit&id="+result.id+"&message=insert_success";
-            },
-            error: function (error) {
-                window.location.href = "${NewURL}?type=list&maxPageItem=2&page=1&message=error_system";
-            }
-        });
-    }
-    function updateNew(data) {
-        $.ajax({
-            url: '${APIurl}',
-            type: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            success: function (result) {
-                window.location.href = "${NewURL}?type=edit&id="+result.id+"&message=update_success";
-            },
-            error: function (error) {
-                window.location.href = "${NewURL}?type=list&maxPageItem=2&page=1&message=error_system";
-            }
-        });
-    }
+
+        
+    })
+    
+    <%--var editor = '';--%>
+    <%--$(document).ready(function(){--%>
+    <%--    editor = CKEDITOR.replace( 'content');--%>
+    <%--});--%>
+    
+    <%--$('#btnAddOrUpdateNew').click(function (e) {--%>
+    <%--    e.preventDefault();--%>
+    <%--    var data = {};--%>
+    <%--    var formData = $('#formSubmit').serializeArray();--%>
+    <%--    $.each(formData, function (i, v) {--%>
+    <%--        data[""+v.name+""] = v.value;--%>
+    <%--    });--%>
+    <%--    data["content"] = editor.getData();--%>
+    <%--    var id = $('#id').val();--%>
+    <%--    if (id == "") {--%>
+    <%--        addNew(data);--%>
+    <%--    } else {--%>
+    <%--        updateNew(data);--%>
+    <%--    }--%>
+    <%--});--%>
+    <%--function addNew(data) {--%>
+    <%--    $.ajax({--%>
+    <%--        url: '${APIurl}',--%>
+    <%--        type: 'POST',--%>
+    <%--        contentType: 'application/json',--%>
+    <%--        data: JSON.stringify(data),--%>
+    <%--        dataType: 'json',--%>
+    <%--        success: function (result) {--%>
+    <%--            window.location.href = "${NewURL}?type=edit&id="+result.id+"&message=insert_success";--%>
+    <%--        },--%>
+    <%--        error: function (error) {--%>
+    <%--            window.location.href = "${NewURL}?type=list&maxPageItem=2&page=1&message=error_system";--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--}--%>
+    <%--function updateNew(data) {--%>
+    <%--    $.ajax({--%>
+    <%--        url: '${APIurl}',--%>
+    <%--        type: 'PUT',--%>
+    <%--        contentType: 'application/json',--%>
+    <%--        data: JSON.stringify(data),--%>
+    <%--        dataType: 'json',--%>
+    <%--        success: function (result) {--%>
+    <%--            window.location.href = "${NewURL}?type=edit&id="+result.id+"&message=update_success";--%>
+    <%--        },--%>
+    <%--        error: function (error) {--%>
+    <%--            window.location.href = "${NewURL}?type=list&maxPageItem=2&page=1&message=error_system";--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--}--%>
 </script>
 </body>
 </html>

@@ -1,6 +1,8 @@
 <%@include file="/common/taglib.jsp" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<c:url var="APIurl" value="/api-admin-new"/>
+<c:url var ="NewURL" value="/admin-new"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +23,11 @@
 					<div class="page-content">
 						<div class="row">
 							<div class="col-xs-12">
+								<c:if test="${not empty messageResponse}">
+									<div class="alert alert-${alert}">
+											${messageResponse}
+									</div>
+								</c:if>
 								<div class="widget-box table-filter">
 									<div class="table-btn-controls">
 										<div class="pull-right tableTools-container">
@@ -48,6 +55,7 @@
 											<table class="table table-bordered">
 												<thead>
 												<tr>
+													<th><input type="checkbox" id="checkAll"></th>
 													<th>Tên bài viết</th>
 													<th>Mô tả ngắn</th>
 													<th>Thao tác</th>
@@ -56,8 +64,9 @@
 												<tbody>
 												<c:forEach var="item" items="${model.listResult }">
 												<tr>
+													<td><input type="checkbox" id="checkbox_${item.id}" value="${item.id}"></td>
 													<td>${item.title }</td>
-													<td>${item.shortdescription }</td>
+													<td>${item.shortDescription }</td>
 													<td>
 														<c:url var="editURL" value="/admin-new">
 															<c:param name="type" value="edit"/>
@@ -89,6 +98,21 @@
 	</div>
 	<!-- /.main-content -->
 	<script type="text/javascript">
+		function deleteNew(data) {
+			$.ajax({
+				url: '${APIurl}',
+				type: "DELETE",
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				success: function (result){
+					window.location.href = "${NewURL}?type=list&maxPageItem=2&page=1&message=delete_success";
+				},
+				error: function (error){
+					window.location.href = "${NewURL}?type=list&maxPageItem=2&page=1&message=error_system";
+				}
+			});
+		}
+
 		var currentPage = ${model.page};
 		var totalPages = ${model.totalPage};
 		// var visiblePages = $(model.maxPageItem);
@@ -110,6 +134,15 @@
 
 				}
 			});
+		});
+
+		$("#btnDelete").click(function(){
+			var data = {};
+			var ids = $('tbody input[type=checkbox]:checked').map(function () {
+				return $(this).val();
+			}).get();
+			data['ids'] = ids;
+			deleteNew(data);
 		});
 	</script>
 </body>

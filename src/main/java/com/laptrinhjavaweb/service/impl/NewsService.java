@@ -29,7 +29,10 @@ public class NewsService implements INewsService {
 	@Override
 	public NewsModel save(NewsModel newModel) {
 		newModel.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-		newModel.setCreatedBy("");
+//		newModel.setCategoryCode("the-thao");
+		CategoryModel category = categoryDAO.findOneByCode(newModel.getCategoryCode());
+		newModel.setCategoryId(category.getId());
+//		newModel.setCreatedBy("");
 		Long newId = newDao.save(newModel);
 		return newDao.findOne(newId);
 		
@@ -41,7 +44,9 @@ public class NewsService implements INewsService {
 		updateNew.setCreatedDate(oldNew.getCreatedDate());
 		updateNew.setCreatedBy(oldNew.getCreatedBy());
 		updateNew.setModifiedDate(new Timestamp(System.currentTimeMillis()));
-		updateNew.setModifiedBy("");
+		CategoryModel category = categoryDAO.findOneByCode(updateNew.getCategoryCode());
+		updateNew.setCategoryId(category.getId());
+//		updateNew.setModifiedBy("");
 		newDao.update(updateNew);
 		return newDao.findOne(updateNew.getId());
 	}
@@ -69,7 +74,7 @@ public class NewsService implements INewsService {
     @Override
     public NewsModel findOne(long id) {
 		NewsModel newsModel = newDao.findOne(id);
-		CategoryModel categoryModel = categoryDAO.findOne(newsModel.getCategoryid());
+		CategoryModel categoryModel = categoryDAO.findOne(newsModel.getCategoryId());
 		newsModel.setCategoryCode(categoryModel.getCode());
 		return newsModel;
     }
